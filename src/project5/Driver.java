@@ -12,12 +12,12 @@ public class Driver
         {
             int n = (int)Math.pow(2, i);
             Buffer b1 = new Buffer(2*n*n);
-            Producer sat = new Producer(b1, n);
 
             for(int j = 1; i <=5; i++)
             {
                 int t = (int)Math.pow(10, j);
-                Consumer rec = new Consumer(b1, n);
+                Producer sat = new Producer(b1, n, t);
+                Consumer rec = new Consumer(b1, n, t);
 
 
             }

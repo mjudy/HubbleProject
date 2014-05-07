@@ -6,15 +6,26 @@ package project5;
  */
 public class Consumer implements Runnable
 {
-    private Buffer buff;
-    private int n;
-    public Consumer(Buffer buffer, int n)
+    private Buffer b1;
+    private int n, t;
+    public Consumer(Buffer b1, int n, int t)
     {
-        buff = buffer;
+        this.b1 = b1;
         this.n = n;
+        this.t = t;
     }
     public void run()
     {
-
+        try
+        {
+            while(b1.size() <= (n*n))
+            {
+                wait();
+            }
+        }
+        catch (InterruptedException ie)
+        {
+            System.out.println("Interrupted!");
+        }
     }
 }

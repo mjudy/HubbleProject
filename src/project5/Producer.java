@@ -8,34 +8,40 @@ import java.util.Random;
  */
 public class Producer implements Runnable
 {
-    private Buffer buff;
-    private int n;
+    private Buffer b1;
+    private int n, t;
     private int randInt;
+    private int count;
     private boolean keepRunning;
     Random rand;
 
-    public Producer(Buffer buffer, int n)
+    public Producer(Buffer b1, int n, int t)
     {
-        buff = buffer;
+        this.b1 = b1;
         this.n = n;
+        this.t = t;
         randInt = 0;
+        count = 0;
         rand = new Random(System.currentTimeMillis());
         keepRunning = true;
     }
     public void run()
     {
-//        try
-//        {
-            for(int i = 0; i < n; i++)
+        try
+        {
+            if(b1.isFull()) wait();
+            while(count <= t)
             {
                 randInt = rand.nextInt(4097);
-                buff.waitForSpace();
-                buff.add(randInt);
+                b1.add(randInt);
+                System.out.println(count + ": " + randInt);
+                b1.waitForSpace();
+                count++;
             }
-//        }
-//        catch (InterruptedException ie)
-//        {
-//            System.out.println("Interruption!");
-//        }
+        }
+        catch (InterruptedException ie)
+        {
+            System.out.println("Interruption!");
+        }
     }
 }

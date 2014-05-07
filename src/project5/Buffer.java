@@ -1,20 +1,22 @@
 package project5;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
  * @author theghv
  * @version 1.0 Date: 5/6/14 Time: 10:09 PM
  */
 public class Buffer implements Runnable
 {
-    private int[] list;
-    private int index;
+    private ConcurrentLinkedQueue<Integer> list;
+    private int limit;
     private boolean keepRunning;
 
 
     public Buffer(int n)
     {
-        list = new int[n];
-        index = 0;
+        list = new ConcurrentLinkedQueue<Integer>();
+        limit = n;
         keepRunning = true;
     }
 
@@ -25,8 +27,8 @@ public class Buffer implements Runnable
 
     synchronized public void add(int newInt)
     {
-        if(index >= list.length) return;
-        list[index++] = newInt;
+        if(list.size() >= limit) return;
+        list.add(newInt);
         notify();
     }
 
@@ -34,7 +36,7 @@ public class Buffer implements Runnable
     {
         try
         {
-            while (index >= list.length) wait();
+            while (list.size() >= limit) wait();
         }
         catch (InterruptedException ie)
         {
@@ -46,7 +48,7 @@ public class Buffer implements Runnable
     {
         try
         {
-            while (index == 0) wait();
+            while (limit == 0) wait();
         }
         catch (InterruptedException ie)
         {
@@ -56,6 +58,11 @@ public class Buffer implements Runnable
 
     synchronized public boolean isFull()
     {
-        return index >= list.length;
+        return list.size() >= limit;
+    }
+
+    public int size()
+    {
+        return list.size();
     }
 }
