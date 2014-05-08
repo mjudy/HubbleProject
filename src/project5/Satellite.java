@@ -6,37 +6,39 @@ import java.util.Random;
  * @author theghv
  * @version 1.0 Date: 5/6/14 Time: 10:09 PM
  */
-public class Producer implements Runnable
+public class Satellite implements Runnable
 {
     private Buffer b1;
-    private int n, t;
+    private int n;
     private int randInt;
     private int count;
-    private boolean keepRunning;
+    public boolean keepRunning;
     Random rand;
 
-    public Producer(Buffer b1, int n, int t)
+    public Satellite(Buffer b1, int n)
     {
         this.b1 = b1;
         this.n = n;
-        this.t = t;
         randInt = 0;
         count = 0;
         rand = new Random(System.currentTimeMillis());
         keepRunning = true;
     }
+
     public void run()
     {
         try
         {
+            keepRunning = true;
+
             if(b1.isFull()) wait();
-            while(count <= t)
+            while(!b1.isFull())
             {
                 randInt = rand.nextInt(4097);
                 b1.add(randInt);
-                System.out.println(count + ": " + randInt);
-                b1.waitForSpace();
-                count++;
+//                count++;
+                Thread.sleep(100);
+                System.out.println(b1.size() + ": " + randInt);
             }
         }
         catch (InterruptedException ie)
@@ -44,4 +46,6 @@ public class Producer implements Runnable
             System.out.println("Interruption!");
         }
     }
+
+
 }

@@ -22,7 +22,15 @@ public class Buffer implements Runnable
 
     public void run()
     {
-
+        try
+        {
+            keepRunning = true;
+            Thread.sleep(10);
+        }
+        catch (InterruptedException ie)
+        {
+            System.out.println("Interrupted!");
+        }
     }
 
     synchronized public void add(int newInt)
@@ -30,6 +38,12 @@ public class Buffer implements Runnable
         if(list.size() >= limit) return;
         list.add(newInt);
         notify();
+    }
+
+    synchronized public Integer remove()
+    {
+        if(list.isEmpty()) return null;
+        return list.poll();
     }
 
     synchronized public void waitForSpace()
