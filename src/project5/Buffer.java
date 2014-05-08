@@ -10,14 +10,14 @@ public class Buffer implements Runnable
 {
     private ConcurrentLinkedQueue<Integer> list;
     private int limit;
-    private boolean keepRunning;
+    public boolean keepRunning;
 
 
     public Buffer(int n)
     {
         list = new ConcurrentLinkedQueue<Integer>();
         limit = n;
-        keepRunning = true;
+        System.out.println("Limit: " + limit);
     }
 
     public void run()
@@ -25,7 +25,7 @@ public class Buffer implements Runnable
         try
         {
             keepRunning = true;
-            Thread.sleep(10);
+            Thread.sleep(1);
         }
         catch (InterruptedException ie)
         {
@@ -75,7 +75,12 @@ public class Buffer implements Runnable
         return list.size() >= limit;
     }
 
-    public int size()
+    synchronized public boolean isEmpty()
+    {
+        return list.isEmpty();
+    }
+
+    synchronized public int size()
     {
         return list.size();
     }

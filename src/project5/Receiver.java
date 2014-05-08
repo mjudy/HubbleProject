@@ -6,26 +6,33 @@ package project5;
  */
 public class Receiver implements Runnable
 {
-    private Buffer b1;
+    private Buffer b1, b2;
     private int n, t;
     public boolean keepRunning;
 
-    public Receiver(Buffer b1, int n, int t)
+    public Receiver(Buffer b1, Buffer b2, int n, int t)
     {
         this.b1 = b1;
+        this.b2 = b2;
         this.n = n;
         this.t = t;
-        keepRunning = false;
     }
 
     public void run()
     {
         try
         {
-            while(b1.size() <= (n*n))
+            keepRunning = true;
+            if(b1.size() == (n*n))
             {
-                wait();
+                System.out.println("Hey hey hey!");
+                while(!b1.isEmpty())
+                {
+                    b2.add(b1.remove());
+                }
             }
+
+            Thread.sleep(100);
         }
         catch (InterruptedException ie)
         {

@@ -11,7 +11,6 @@ public class Satellite implements Runnable
     private Buffer b1;
     private int n;
     private int randInt;
-    private int count;
     public boolean keepRunning;
     Random rand;
 
@@ -20,7 +19,6 @@ public class Satellite implements Runnable
         this.b1 = b1;
         this.n = n;
         randInt = 0;
-        count = 0;
         rand = new Random(System.currentTimeMillis());
         keepRunning = true;
     }
@@ -36,9 +34,10 @@ public class Satellite implements Runnable
             {
                 randInt = rand.nextInt(4097);
                 b1.add(randInt);
-//                count++;
-                Thread.sleep(100);
-                System.out.println(b1.size() + ": " + randInt);
+                if(b1.size()%10000 == 0)
+                {
+                    System.out.println("I'm still here!");
+                }
             }
         }
         catch (InterruptedException ie)
