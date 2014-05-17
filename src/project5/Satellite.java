@@ -8,43 +8,41 @@ import java.util.Random;
  */
 public class Satellite implements Runnable
 {
+    /** The Buffer B1 as mentioned in the project document */
     private Buffer b1;
-    private int n;
-    private int randInt;
-    public boolean keepRunning;
-    Random rand;
 
-    public Satellite(Buffer b1, int n)
+    private boolean isRunning;
+
+    public Satellite(Buffer b1)
     {
+        this.isRunning = true;
         this.b1 = b1;
-        this.n = n;
-        randInt = 0;
-        rand = new Random(System.currentTimeMillis());
-        keepRunning = true;
     }
 
+    public void stop()
+    {
+        isRunning = false;
+    }
+
+    @Override
     public void run()
     {
         try
         {
-            keepRunning = true;
+            Random generator = new Random();
 
-            if(b1.isFull()) wait();
-            while(!b1.isFull())
+            while(isRunning)
             {
-                randInt = rand.nextInt(4097);
-                b1.add(randInt);
-                if(b1.size()%10000 == 0)
-                {
-                    System.out.println("I'm still here!");
-                }
+                int value = generator.nextInt(4096 + 1);
+
+                while(!b1.add(value))
+                    Thread.sleep(1000);
             }
         }
-        catch (InterruptedException ie)
+        catch (InterruptedException e)
         {
-            System.out.println("Interruption!");
+            System.err.println("Satellite Interrupted!");
+            e.printStackTrace();
         }
     }
-
-
 }

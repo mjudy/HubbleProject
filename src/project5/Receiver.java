@@ -6,9 +6,10 @@ package project5;
  */
 public class Receiver implements Runnable
 {
-    private Buffer b1, b2;
+    private Buffer b1;
+    private Buffer b2;
     private int n, t;
-    public boolean keepRunning;
+    private Processor proc;
 
     public Receiver(Buffer b1, Buffer b2, int n, int t)
     {
@@ -16,27 +17,41 @@ public class Receiver implements Runnable
         this.b2 = b2;
         this.n = n;
         this.t = t;
+        proc = new Processor(b2, t, n);
     }
 
+    @Override
     public void run()
     {
         try
         {
-            keepRunning = true;
-            if(b1.size() == (n*n))
+            while(b1.size() < (n * n))
             {
-                System.out.println("Hey hey hey!");
-                while(!b1.isEmpty())
-                {
-                    b2.add(b1.remove());
-                }
+                Thread.sleep(1000);
             }
 
-            Thread.sleep(100);
+            boolean isRunning;
+            do
+            {
+                isRunning = b2.add(b1.remove());
+            } while(isRunning);
+
+            proc.processData();
         }
-        catch (InterruptedException ie)
+        catch (InterruptedException e)
         {
-            System.out.println("Interrupted!");
+            System.err.println("Receiver Interrupted!");
+            e.printStackTrace();
         }
+    }
+
+    public String getRelativeFilePath()
+    {
+        return proc.getRelativeFilePath();
+    }
+
+    public long getMergeSortTime()
+    {
+        return proc.getMergeSortTime();
     }
 }

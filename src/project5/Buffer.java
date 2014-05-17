@@ -1,87 +1,57 @@
 package project5;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.LinkedList;
 
 /**
  * @author theghv
  * @version 1.0 Date: 5/6/14 Time: 10:09 PM
  */
-public class Buffer implements Runnable
+public class Buffer
 {
-    private ConcurrentLinkedQueue<Integer> list;
-    private int limit;
-    public boolean keepRunning;
+    private volatile LinkedList<Integer> buffer;
+    private volatile int limit;
 
-
-    public Buffer(int n)
+    public Buffer(int limit)
     {
-        list = new ConcurrentLinkedQueue<Integer>();
-        limit = n;
-        System.out.println("Limit: " + limit);
+        buffer = new LinkedList<Integer>();
+        this.limit = limit;
     }
 
-    public void run()
+    public synchronized boolean add(int num)
     {
-        try
+        if(buffer.size() == limit)
         {
-            keepRunning = true;
-            Thread.sleep(1);
+            return false;
         }
-        catch (InterruptedException ie)
+        else
         {
-            System.out.println("Interrupted!");
+            buffer.add(num);
+            return true;
         }
     }
 
-    synchronized public void add(int newInt)
+    public synchronized int remove()
     {
-        if(list.size() >= limit) return;
-        list.add(newInt);
-        notify();
-    }
-
-    synchronized public Integer remove()
-    {
-        if(list.isEmpty()) return null;
-        return list.poll();
-    }
-
-    synchronized public void waitForSpace()
-    {
-        try
+        if(buffer.size() == 0)
         {
-            while (list.size() >= limit) wait();
+            throw new RuntimeException("Empty Buffer!");
         }
-        catch (InterruptedException ie)
+        return buffer.poll();
+    }
+
+    public int size()
+    {
+        return buffer.size();
+    }
+
+    public int[] toArray()
+    {
+        int[] arry = new int[buffer.size()];
+        int index = 0;
+        for(Integer i : buffer)
         {
-            System.out.println("Interrupted!");
+            arry[index] = i;
         }
-    }
-
-    synchronized public void waitForData()
-    {
-        try
-        {
-            while (limit == 0) wait();
-        }
-        catch (InterruptedException ie)
-        {
-            System.out.println("Interrupted!");
-        }
-    }
-
-    synchronized public boolean isFull()
-    {
-        return list.size() >= limit;
-    }
-
-    synchronized public boolean isEmpty()
-    {
-        return list.isEmpty();
-    }
-
-    synchronized public int size()
-    {
-        return list.size();
+        return arry;
     }
 }
