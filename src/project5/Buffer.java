@@ -51,6 +51,7 @@ public class Buffer
         for(Integer i : buffer)
         {
             arry[index] = i;
+            index++;
         }
         return arry;
     }

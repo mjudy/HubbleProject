@@ -1,5 +1,7 @@
 package project5;
 
+import java.util.Arrays;
+
 /**
  * @author theghv
  * @version 1.0 Date: 5/16/14 Time: 6:26 PM
@@ -8,85 +10,77 @@ public class ThresholdSort
 {
     public static int[] mergeSort(int[] array, int t)
     {
-        mergeSort(array, t, 0, array.length - 1);
-        return array;
-    }
-
-    private static void mergeSort(int[] array, int t, int min, int max)
-    {
-        if(max - min <= t)
+        if(array.length <= t)
         {
-            insertionSort(array, min, max);
+            insertionSort(array, 0, array.length - 1);
         }
         else
         {
-            int mid = (min + max) / 2;
-            SortAction left = new SortAction(array, t, min, mid);
-            SortAction right = new SortAction(array, t, mid + 1, max);
-            Thread leftThread = new Thread(left);
-            Thread rightThread = new Thread(right);
+            mergeSort(array);
+        }
 
-            leftThread.run();
-            rightThread.run();
+        return array;
+    }
 
-            while(true)
-            {
-                try
-                {
-                    leftThread.join();
-                    break;
-                }
-                catch (InterruptedException e)
-                {
-                }
-            }
+    static void mergeSort(int[] array)
+    {
+        if (array.length > 1)
+        {
+            int q = array.length/2;
 
-            while(true)
-            {
-                try
-                {
-                    rightThread.join();
-                    break;
-                } catch (InterruptedException e)
-                {
-                }
-            }
+            int[] leftArray = Arrays.copyOfRange(array, 0, q);
+            int[] rightArray = Arrays.copyOfRange(array,q,array.length);
 
-            merge(array, min, mid, max);
+            mergeSort(leftArray);
+            mergeSort(rightArray);
+
+            merge(array,leftArray,rightArray);
         }
     }
 
-    private  static void merge(int[] array, int min, int mid, int max)
+    static void merge(int[] array, int[] arrayL, int[] arrayR)
     {
-        int[] a = new int[max - min + 1];
-
-        for(int i = 0, left = min, right = mid + 1; i < a.length; i++, left++, right++)
+        int total = arrayL.length + arrayR.length;
+        int index, indexL, indexR;
+        index = indexL = indexR = 0;
+        while (index < total)
         {
-            if(left == mid + 1)
+            if ((indexL < arrayL.length) && (indexR<arrayR.length))
             {
-                a[i] = array[right];
-                left--;
-            }
-            else if(right == max + 1)
-            {
-                a[i] = array[left];
-                right--;
-            }
-            else if(array[left] < array[right])
-            {
-                a[i] = array[left];
-                right--;
+                if (arrayL[indexL] < arrayR[indexR])
+                {
+                    array[index] = arrayL[indexL];
+                    index++;
+                    indexL++;
+                }
+                else
+                {
+                    array[index] = arrayR[indexR];
+                    index++;
+                    indexR++;
+                }
             }
             else
             {
-                a[i] = array[right];
-                left--;
+                if (indexL >= arrayL.length)
+                {
+                    while (indexR < arrayR.length)
+                    {
+                        array[index] = arrayR[indexR];
+                        index++;
+                        indexR++;
+                    }
+                }
+                if (indexR >= arrayR.length)
+                {
+                    while (indexL < arrayL.length)
+                    {
+                        array[index] = arrayL[indexL];
+                        indexL++;
+                        index++;
+                    }
+                }
             }
-        }
-
-        for(int i = 0, m = min; i < a.length; i++, m++)
-        {
-            array[m] = a[i];
         }
     }
 
@@ -103,26 +97,6 @@ public class ThresholdSort
                     array[j] = temp;
                 }
             }
-        }
-    }
-
-    private static class SortAction implements Runnable
-    {
-        private int[] array;
-        private int t, min, max;
-
-        public SortAction(int[] array, int t, int min, int max)
-        {
-            this.array = array;
-            this.t = t;
-            this.min = min;
-            this.max = max;
-        }
-
-        @Override
-        public void run()
-        {
-            ThresholdSort.mergeSort(array, t, min, max);
         }
     }
 }

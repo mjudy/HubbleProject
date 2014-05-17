@@ -36,7 +36,6 @@ public class Driver
                 }
 
                 satellite.stop();
-//                satThread.join();
             }
         }
         catch (InterruptedException e)
