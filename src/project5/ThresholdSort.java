@@ -22,14 +22,14 @@ public class ThresholdSort
         return array;
     }
 
-    static void mergeSort(int[] array)
+    private static void mergeSort(int[] array)
     {
         if (array.length > 1)
         {
             int q = array.length/2;
 
             int[] leftArray = Arrays.copyOfRange(array, 0, q);
-            int[] rightArray = Arrays.copyOfRange(array,q,array.length);
+            int[] rightArray = Arrays.copyOfRange(array, q, array.length);
 
             mergeSort(leftArray);
             mergeSort(rightArray);
@@ -38,7 +38,7 @@ public class ThresholdSort
         }
     }
 
-    static void merge(int[] array, int[] arrayL, int[] arrayR)
+    private static void merge(int[] array, int[] arrayL, int[] arrayR)
     {
         int total = arrayL.length + arrayR.length;
         int index, indexL, indexR;
@@ -84,7 +84,7 @@ public class ThresholdSort
         }
     }
 
-    private synchronized static void insertionSort(int[] array, int min, int max)
+    private static void insertionSort(int[] array, int min, int max)
     {
         for(int i = min; i <= max; i++)
         {
