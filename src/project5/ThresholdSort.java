@@ -3,7 +3,7 @@ package project5;
 import java.util.Arrays;
 
 /**
- * @author theghv
+ * @author Mark Judy
  * @version 1.0 Date: 5/16/14 Time: 6:26 PM
  */
 public class ThresholdSort

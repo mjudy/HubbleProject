@@ -3,7 +3,7 @@ package project5;
 import java.util.LinkedList;
 
 /**
- * @author theghv
+ * @author Mark Judy
  * @version 1.0 Date: 5/6/14 Time: 10:09 PM
  */
 public class Buffer

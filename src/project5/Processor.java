@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * @author theghv
+ * @author Mark Judy
  * @version 1.0 Date: 5/16/14 Time: 5:58 PM
  */
 public class Processor
@@ -37,15 +37,14 @@ public class Processor
             normData = new int[data.length];
             normalize();
 
-            File file = new File("images");
-
-            if(!file.exists())
-            {
-                file.mkdir();
-            }
-
+            File folder = new File("images");
             path = String.format("images/output_N%d_T%d.png", n, t);
-            file = new File(path);
+            File file = new File(path);
+
+            if(!folder.exists())
+            {
+                folder.mkdir();
+            }
 
             if(file.exists())
             {
@@ -55,11 +54,12 @@ public class Processor
             BufferedImage image = new BufferedImage(n, n, BufferedImage.TYPE_BYTE_GRAY);
             WritableRaster raster = image.getRaster();
 
-            for(int i = 0, iter = 0; i < image.getHeight(); i++)
+            int index = 0;
+            for(int row = 0; row < image.getHeight(); row++)
             {
-                for(int j = 0; j < image.getHeight(); j++, iter++)
+                for(int col = 0; col < image.getHeight(); col++)
                 {
-                    raster.setPixel(j, i, new int[] {normData[iter]});
+                    raster.setPixel(col, row, new int[] {normData[index++]});
                 }
             }
 
@@ -67,7 +67,7 @@ public class Processor
         }
         catch (IOException e)
         {
-            System.err.println("Caught error...");
+            System.err.println("I couldn't deal with that file you were looking for.");
             e.printStackTrace();
         }
     }
@@ -83,7 +83,7 @@ public class Processor
         }
     }
 
-    public String getRelativeFilePath()
+    public String getFilePath()
     {
         return path;
     }

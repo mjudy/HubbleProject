@@ -2,7 +2,6 @@ package project5;
 
 public class Driver
 {
-
     public static void main(String[] args)
     {
         int count = 1;
@@ -32,7 +31,7 @@ public class Driver
 
                     System.out.println("Run #" + count++ + "; i=" + i + "; j=" + j + "; N=" + n + "; B1=" + (2 * n * n) + "; B2=" + (n * n) + "; T=" + t);
                     System.out.println("Sort Time: " + rec.getMergeSortTime() + "ms");
-                    System.out.println("Image: " + rec.getRelativeFilePath() + "\n");
+                    System.out.println("Image: " + rec.getFilePath() + "\n");
                 }
 
                 satellite.stop();

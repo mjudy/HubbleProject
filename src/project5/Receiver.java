@@ -1,7 +1,7 @@
 package project5;
 
 /**
- * @author theghv
+ * @author Mark Judy
  * @version 1.0 Date: 5/6/14 Time: 10:09 PM
  */
 public class Receiver implements Runnable
@@ -45,9 +45,9 @@ public class Receiver implements Runnable
         }
     }
 
-    public String getRelativeFilePath()
+    public String getFilePath()
     {
-        return proc.getRelativeFilePath();
+        return proc.getFilePath();
     }
 
     public long getMergeSortTime()
