@@ -1,4 +1,4 @@
-package project5;
+package proj5;
 
 /**
  * Defines a data receiver for this satellite simulation.

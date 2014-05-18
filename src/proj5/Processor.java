@@ -1,4 +1,4 @@
-package project5;
+package proj5;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -53,12 +53,6 @@ public class Processor
             File folder = new File("images");
             path = String.format("images/output_N%d_T%d.png", n, t);
             File file = new File(path);
-
-            //TODO - Remove for ANT
-            if(!folder.exists())
-            {
-                folder.mkdir();
-            }
 
             if(file.exists())
             {

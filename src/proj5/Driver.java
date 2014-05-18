@@ -1,4 +1,4 @@
-package project5;
+package proj5;
 
 /**
  * This class creates and runs all of the instances and threads for the satellite simulation.
