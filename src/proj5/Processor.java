@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 
 /**
@@ -50,8 +51,10 @@ public class Processor
             normData = new int[data.length];
             normalize();
 
-            File folder = new File("images");
-            path = String.format("images/output_N%d_T%d.png", n, t);
+            path = getClass().getClassLoader().getResource(".").getPath();
+            System.out.println(path);
+            path += String.format("output_N%d_T%d.png", n, t);
+            path = path.replaceAll("bin/", "images/");
             File file = new File(path);
 
             if(file.exists())
