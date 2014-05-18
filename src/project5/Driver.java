@@ -1,7 +1,16 @@
 package project5;
 
+/**
+ * This class creates and runs all of the instances and threads for the satellite simulation.
+ * It also prints a report of the program's status and the available processors and memory on the current system.
+ */
 public class Driver
 {
+    /**
+     * Runs the satellite simulation.
+     *
+     * @param args command line arguments for this program.
+     */
     public static void main(String[] args)
     {
         int count = 1;
@@ -35,6 +44,7 @@ public class Driver
                 }
 
                 satellite.stop();
+                satThread.join(10000);
             }
         }
         catch (InterruptedException e)

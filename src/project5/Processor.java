@@ -7,6 +7,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
+ * Defines a data processing class for the satellite simulation. This class creates a gray scale image from the generated
+ * random values that have been normalized between 0 and 255.
+ *
  * @author Mark Judy
  * @version 1.0 Date: 5/16/14 Time: 5:58 PM
  */
@@ -19,6 +22,13 @@ public class Processor
     private String path;
     private long mergeSortTime;
 
+    /**
+     * Creates a new instance of the processor with the image size, sorting threshold, and received data buffer.
+     *
+     * @param b2 The buffer containing received data.
+     * @param t The sorting threshold.
+     * @param n The image side dimension.
+     */
     public Processor(Buffer b2, int t, int n)
     {
         this.b2 = b2;
@@ -26,6 +36,9 @@ public class Processor
         this.n = n;
     }
 
+    /**
+     * Sorts the gathered data, normalizes the values, and then creates a new image based on the data.
+     */
     public void processData()
     {
         try
@@ -41,6 +54,7 @@ public class Processor
             path = String.format("images/output_N%d_T%d.png", n, t);
             File file = new File(path);
 
+            //TODO - Remove for ANT
             if(!folder.exists())
             {
                 folder.mkdir();
@@ -59,7 +73,7 @@ public class Processor
             {
                 for(int col = 0; col < image.getHeight(); col++)
                 {
-                    raster.setPixel(col, row, new int[] {normData[index++]});
+                    raster.setSample(col, row, 0, normData[index++]);
                 }
             }
 
@@ -72,23 +86,37 @@ public class Processor
         }
     }
 
+    /**
+     * Normalizes the gathered data to values between 0 and 255.
+     */
     private void normalize()
     {
         int index = 0;
         for(int i : data)
         {
-            int v = (int) Math.floor(i * (255.0 / 4096.0));
+            int v = (int) ((i * 255.0) / 4096.0);
             normData[index] = v;
             index++;
         }
     }
 
+    /**
+     * Gets the file path of the created image.
+     *
+     * @return the file path of the created image.
+     */
     public String getFilePath()
     {
         return path;
     }
 
-    public long getMergeSortTime() {
+    /**
+     * Gets the elapsed time of the most recent sorting operation in milliseconds..
+     *
+     * @return the elapsed time of the most recent sorting operation in milliseconds.
+     */
+    public long getMergeSortTime()
+    {
         return mergeSortTime;
     }
 }
