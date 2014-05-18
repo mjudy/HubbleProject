@@ -51,10 +51,13 @@ public class Processor
             normData = new int[data.length];
             normalize();
 
-            path = getClass().getClassLoader().getResource(".").getPath();
-            System.out.println(path);
-            path += String.format("output_N%d_T%d.png", n, t);
-            path = path.replaceAll("bin/", "images/");
+            // -- USE THIS FOR *NIX --
+//            path = getClass().getClassLoader().getResource(".").getPath();
+//            path += String.format("output_N%d_T%d.png", n, t);
+//            path = path.replaceAll("bin/", "images/");
+
+            // -- USE THIS FOR WINDBLOWS --
+            path = String.format("images/output_N%d_T%d.png", n, t);
             File file = new File(path);
 
             if(file.exists())
